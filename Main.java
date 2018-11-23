@@ -1,130 +1,60 @@
 public class Main {
     public static void main(String[] args) {
         //pre-declared memory adresses
-        int xMemAdr = 0;
-        int yMemAdr = 1;
+        int len = 0;
+        int[] list = {1, 2, 3, 4, 5};
+        int cnt = 6;
+        int ref = 7;
+        int sum = 8;
 
         //pre-declared instruction points
-        int while_InstructionAdr = 2;
-        int end_InstructionAdr = 15;
+        int start = 0;
+        int next = 5;
+        int done = 18;
 
         //process code
         MIMAInstruction[] process = {
-            new MIMAInstruction("LDC", 0),
-            new MIMAInstruction("STV", yMemAdr),
-            new MIMAInstruction("LDC", 0),
-            new MIMAInstruction("NOT"),
-            new MIMAInstruction("ADD", 0),
-            new MIMAInstruction("JMN", end_InstructionAdr),
-            new MIMAInstruction("LDC", 0),
-            new MIMAInstruction("NOT"),
-            new MIMAInstruction("ADD", xMemAdr),
-            new MIMAInstruction("AND", xMemAdr),
-            new MIMAInstruction("STV", xMemAdr),
+            new MIMAInstruction("LDC", 0), //start
+            new MIMAInstruction("STV", sum),
+            new MIMAInstruction("STV", cnt),
+            new MIMAInstruction("LDC", list[0]),
+            new MIMAInstruction("STV", ref),
+            new MIMAInstruction("LDIV", ref), //next
+            new MIMAInstruction("ADD", sum),
+            new MIMAInstruction("STV", sum),
             new MIMAInstruction("LDC", 1),
-            new MIMAInstruction("ADD", yMemAdr),
-            new MIMAInstruction("STV", yMemAdr),
-            new MIMAInstruction("JMP", while_InstructionAdr),
-            new MIMAInstruction("HALT")
+            new MIMAInstruction("ADD", cnt),
+            new MIMAInstruction("STV", cnt),
+            new MIMAInstruction("LDC", 1),
+            new MIMAInstruction("ADD", ref),
+            new MIMAInstruction("STV", ref),
+            new MIMAInstruction("LDV", cnt),
+            new MIMAInstruction("EQL", len),
+            new MIMAInstruction("JMN", done),
+            new MIMAInstruction("JMP", next),
+            new MIMAInstruction("HALT") //done
         };
 
         //init minimal machine
         MIMA mima = new MIMA(process);
 
-        for (int i=0; i<33; ++i) {
-            //pre-initialization of memory adresses
-            mima.memoryRegister[xMemAdr] = new Bit24(i);
+        //pre-initialization of memory adresses
+        mima.setMemoryValueAt(len, 5);
+        mima.setMemoryValueAt(list[0], 11);
+        mima.setMemoryValueAt(list[1], 22);
+        mima.setMemoryValueAt(list[2], 33);
+        mima.setMemoryValueAt(list[3], 44);
+        mima.setMemoryValueAt(list[4], 55);
 
-            //start minimal machine process
-            mima.startProcess();
-            System.out.println(mima.memoryRegister[xMemAdr].getValue());
-        }
+        //start minimal machine process
+        mima.startProcess();
+
+        //reading results from memory register
+        int sumResult = mima.getMemoryValueAt(sum);
+
+        System.out.println("sum: " + sumResult);
+
+        //can reset the minimal machine
+        mima.reset();
     }
 }
-
-/*6.1
-//pre-declared memory adresses
-int xMemAdr = 0;
-int yMemAdr = 1;
-int zMemAdr = 2;
-
-//pre-declared instruction points
-int A_InstructionAdr = 2;
-int B_InstructionAdr = 6;
-int C_InstructionAdr = 14;
-
-//process code
-MIMAInstruction[] process = {
-    new MIMAInstruction("LDC", 0),
-    new MIMAInstruction("STV", zMemAdr),
-    new MIMAInstruction("EQL", xMemAdr),
-    new MIMAInstruction("NOT"),
-    new MIMAInstruction("JMN", B_InstructionAdr),
-    new MIMAInstruction("HALT"),
-    new MIMAInstruction("LDV", 1),
-    new MIMAInstruction("ADD", 2),
-    new MIMAInstruction("STV", 2),
-    new MIMAInstruction("LDC", 0),
-    new MIMAInstruction("NOT"),
-    new MIMAInstruction("ADD", 0),
-    new MIMAInstruction("STV", 0),
-    new MIMAInstruction("LDC", 0),
-    new MIMAInstruction("JMP", A_InstructionAdr)
-};
-
-//init minimal machine
-MIMA mima = new MIMA(process);
-
-//pre-initialization of memory adresses
-mima.memoryRegister[xMemAdr] = new Bit24(3);
-mima.memoryRegister[yMemAdr] = new Bit24(1337);
-
-//start minimal machine process
-mima.startProcess();
-
-//reading results from memory register
-int xResult = mima.memoryRegister[xMemAdr].getValue();
-int yResult = mima.memoryRegister[yMemAdr].getValue();
-int zResult = mima.memoryRegister[zMemAdr].getValue();
-
-System.out.println("x: " + xResult + ", y: " + yResult + ", z: " + zResult);
-*/
-
-/*6.2
-//pre-declared memory adresses
-int xMemAdr = 0;
-int yMemAdr = 0;
-
-//pre-declared instruction points
-int while_InstructionAdr = 2;
-int end_InstructionAdr = 15;
-
-//process code
-MIMAInstruction[] process = {
-    new MIMAInstruction("LDC", );
-    new MIMAInstruction("STV", );
-    new MIMAInstruction("LDC", );
-    new MIMAInstruction("NOT");
-    new MIMAInstruction("ADD", 0);
-    new MIMAInstruction("JMN", end_InstructionAdr);
-    new MIMAInstruction("LDC", 0);
-    new MIMAInstruction("NOT");
-    new MIMAInstruction("LDD", );
-    new MIMAInstruction("AND", );
-    new MIMAInstruction("STV", );
-    new MIMAInstruction("LDC", 1);
-    new MIMAInstruction("ADD", yMemAdr);
-    new MIMAInstruction("STV", yMemAdr);
-    new MIMAInstruction("JMP", while_InstructionAdr);
-    new MIMAInstruction("HALT");
-};
-
-//init minimal machine
-MIMA mima = new MIMA(process);
-
-//pre-initialization of memory adresses
-mima.memoryRegister[xMemAdr] = new Bit24(42);
-
-//start minimal machine process
-mima.startProcess();
-*/
