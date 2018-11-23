@@ -3,7 +3,7 @@ _Created by Walter Alexander Böttcher (23.11.2018)_
 
 #### Simulates the KIT minimal machine
 
-You can find the example (example program from GBI sheet Nr.10 on proccessors (WS18/19)) on how to use the MIMA-Simulator by editing main source code in Main.java (look further down):
+You can find the example (example program from GBI sheet Nr.10 on processors (WS18/19)) on how to use the MIMA-Simulator by editing main source code in Main.java (look further down):
 
 ### Dowloading/using for the first time
 Download the repository in a ZIP-file (or however you want)
@@ -22,7 +22,7 @@ If everything works, you should now see this output:
 sum: 165
 ```
 
-Now you'll only need to change the Main.java file, then compile `javac Main.java` and run `java Main` it.
+Now you will only need to change the Main.java file for your own tests, then compile `javac Main.java` and run `java Main` it.
 
 ## Main.java
 
