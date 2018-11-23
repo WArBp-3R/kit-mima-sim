@@ -80,6 +80,7 @@ public class MIMA {
         LDC(accumulatorValue);
     }
 
+
     //MIMA-commands
     public void LDC(int c)      { accumulator.setValue(c); }
     public void LDV(int memAdr) { accumulator.setValue(getMemoryValueAt(memAdr)); }
@@ -89,22 +90,14 @@ public class MIMA {
         memoryRegister[memAdr].setValue(accumulator.getValue());
     }
 
-    public void LDIV(int memAdr) {
-        LDV(getMemoryValueAt(memAdr));
-        LDV(getMemoryValueAt(memAdr));
-    }
-
-    public void STIV(int memAdr) {
-        LDV(getMemoryValueAt(memAdr));
-        STV(getMemoryValueAt(memAdr));
-    }
+    public void LDIV(int memAdr) { LDV(getMemoryValueAt(memAdr)); }
+    public void STIV(int memAdr) { STV(getMemoryValueAt(memAdr)); }
 
     public void ADD(int memAdr) { accumulator.setValue(accumulator.getValue() + getMemoryValueAt(memAdr)); }
     public void AND(int memAdr) { accumulator.setValue(accumulator.getValue() & getMemoryValueAt(memAdr)); }
     public void OR (int memAdr) { accumulator.setValue(accumulator.getValue() | getMemoryValueAt(memAdr)); }
     public void XOR(int memAdr) { accumulator.setValue(accumulator.getValue() ^ getMemoryValueAt(memAdr)); }
     public void NOT()           { accumulator.setValue(~accumulator.getValue());}
-
     public void RAR() {
         int accumulatorValue = accumulator.getValue();
         int reversedValue = 0;
@@ -117,7 +110,6 @@ public class MIMA {
 
     public void EQL(int memAdr) { accumulator.setValue(accumulator.getValue() == getMemoryValueAt(memAdr) ? -1 : 0); }
     public void JMP(int instructionAdr){ instructionIterator = instructionAdr - 1;}
-
     public void JMN(int instructionAdr){
         if (accumulator.getValue() < 0)
             JMP(instructionAdr);
