@@ -10,9 +10,6 @@ Download the repository in a ZIP-file (or however you want)
 
 In the folder, run these commands:
 ```
-javac Bit24.java
-javac MIMAInstruction.java
-javac MIMA.java
 javac Main.java
 java Main
 ```
