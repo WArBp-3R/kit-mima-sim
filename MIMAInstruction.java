@@ -1,12 +1,12 @@
 public class MIMAInstruction {
     //fields - pair value
-    public String command;
-    public int value;
+    private String command;
+    private int value;
 
     //constructors
     MIMAInstruction(String command, int value) {
         this.command = command;
-        this.value = value;
+        this.value = MIMA.getMIMAValue(value);
     }
 
     MIMAInstruction(String command) { this(command, 0); }
