@@ -1,5 +1,6 @@
 public class Main {
     public static void main(String[] args) {
+        //Example
         //pre-declared memory adresses
         int len = 0;
         int[] list = {1, 2, 3, 4, 5};
@@ -39,22 +40,23 @@ public class Main {
         MIMA mima = new MIMA(process);
 
         //pre-initialization of memory adresses
-        mima.setMemoryValueAt(len, 5);
-        mima.setMemoryValueAt(list[0], 11);
-        mima.setMemoryValueAt(list[1], 22);
-        mima.setMemoryValueAt(list[2], 33);
-        mima.setMemoryValueAt(list[3], 44);
-        mima.setMemoryValueAt(list[4], 55);
+        mima.setMemValAt(len, 5);
+        mima.setMemValAt(list[0], 11);
+        mima.setMemValAt(list[1], 22);
+        mima.setMemValAt(list[2], 33);
+        mima.setMemValAt(list[3], 44);
+        mima.setMemValAt(list[4], 55);
 
         //start minimal machine process
         mima.startProcess();
 
         //reading results from memory register
-        int sumResult = mima.getMemoryValueAt(sum);
+        int sumResult = mima.getMemValAt(sum);
 
         System.out.println("sum: " + sumResult);
 
-        //can reset the minimal machine
-        mima.reset();
+        //can reset memory and instruction of MIMA
+        mima.resetMemory();
+        mima.resetInstructions();
     }
 }
