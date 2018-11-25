@@ -18,56 +18,39 @@ public class MIMAInstruction {
         int paramValue = instruction.value;
 
         switch (cmdName) {
-            case "":
-                m.NULL();
+            case "": m.NULL();
                 break;
-            case "LDC":
-                m.LDC(paramValue);
+            case "LDC": m.LDC(paramValue);
                 break;
-            case "LDV":
-                m.LDV(paramValue);
+            case "LDV": m.LDV(paramValue);
                 break;
-            case "STV":
-                m.STV(paramValue);
+            case "STV": m.STV(paramValue);
                 break;
-            case "LDIV":
-                m.LDIV(paramValue);
+            case "LDIV": m.LDIV(paramValue);
                 break;
-            case "STIV":
-                m.STIV(paramValue);
+            case "STIV": m.STIV(paramValue);
                 break;
-            case "ADD":
-                m.ADD(paramValue);
+            case "ADD": m.ADD(paramValue);
                 break;
-            case "AND":
-                m.AND(paramValue);
+            case "AND": m.AND(paramValue);
                 break;
-            case "OR":
-                m.OR(paramValue);
+            case "OR": m.OR(paramValue);
                 break;
-            case "XOR":
-                m.XOR(paramValue);
+            case "XOR": m.XOR(paramValue);
                 break;
-            case "NOT":
-                m.NOT();
+            case "NOT": m.NOT();
                 break;
-            case "RAR":
-                m.RAR();
+            case "RAR": m.RAR();
                 break;
-            case "EQL":
-                m.EQL(paramValue);
+            case "EQL": m.EQL(paramValue);
                 break;
-            case "JMP":
-                m.JMP(paramValue);
+            case "JMP": m.JMP(paramValue);
                 break;
-            case "JMN":
-                m.JMN(paramValue);
+            case "JMN": m.JMN(paramValue);
                 break;
-            case "HALT":
-                m.HALT();
+            case "HALT": m.HALT();
                 break;
-            default:
-                m.NULL();
+            default: m.NULL();
         }
     }
 }
