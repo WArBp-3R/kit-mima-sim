@@ -28,7 +28,7 @@ public class MIMA {
     }
 
     //methods
-    public int getMIMAValue(int x) {
+    public static int getMIMAValue(int x) {
         x %= VALUE_BIT_RANGE;
         if (x < 0)
             x = VALUE_BIT_RANGE + x;
@@ -58,7 +58,7 @@ public class MIMA {
 
     //MIMA-commands
     public void LDC(int c)      { accumulator = getMIMAValue(c); }
-    public void LDV(int memAdr) { accumulator = getMIMAValue(getMemValAt(memAdr)); }
+    public void LDV(int memAdr) { accumulator = getMemValAt(memAdr); }
     public void STV(int memAdr) { setMemValAt(memAdr, accumulator); }
     public void LDIV(int memAdr){ LDV(getMemValAt(memAdr)); }
     public void STIV(int memAdr){ STV(getMemValAt(memAdr)); }
@@ -66,7 +66,7 @@ public class MIMA {
     public void AND(int memAdr) { accumulator = getMIMAValue(accumulator & getMemValAt(memAdr)); }
     public void OR (int memAdr) { accumulator = getMIMAValue(accumulator | getMemValAt(memAdr)); }
     public void XOR(int memAdr) { accumulator = getMIMAValue(accumulator ^ getMemValAt(memAdr)); }
-    public void NOT()           { accumulator = getMIMAValue(~accumulator);}
+    public void NOT()           { accumulator = ~accumulator;}
     public void RAR() {
         int accumulatorValue = accumulator;
         int reversedValue = 0;
@@ -74,11 +74,11 @@ public class MIMA {
             reversedValue += (accumulatorValue % 2)*Math.pow(10, valueBitSize-i);
             accumulatorValue /= 2;
         }
-        accumulator = getMIMAValue(reversedValue);
+        accumulator = reversedValue;
     }
 
     public void EQL(int memAdr) {
-        accumulator = getMIMAValue(accumulator == getMemValAt(memAdr) ? -1 : 0);
+        accumulator = accumulator == getMemValAt(memAdr) ? -1 : 0;
     }
 
     public void JMP(int instructionAdr){ instructionIterator = instructionAdr - 1;}
