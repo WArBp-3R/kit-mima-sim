@@ -9,5 +9,5 @@ public class MIMAMemoryRegister {
 
     //methods
     public int getValueAt(int adr) { return memoryRegister[adr]; }
-    public void setValueAt(int adr, int val) { memoryRegister[adr] = val; }
+    public void setValueAt(int adr, int val) { memoryRegister[adr] = MIMA.getMIMAValue(val); }
 }
