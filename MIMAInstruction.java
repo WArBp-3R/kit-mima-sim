@@ -1,20 +1,18 @@
 public class MIMAInstruction {
+    //fields - pair value
     public String command;
     public int value;
 
+    //constructors
     MIMAInstruction(String command, int value) {
         this.command = command;
         this.value = value;
     }
 
-    MIMAInstruction(String command) {
-        this(command, 0);
-    }
+    MIMAInstruction(String command) { this(command, 0); }
+    MIMAInstruction() { this("", 0); }
 
-    MIMAInstruction() {
-        this("", 0);
-    }
-
+    //methods
     public static void read(MIMA m, MIMAInstruction instruction) {
         String cmdName = instruction.command;
         int paramValue = instruction.value;
