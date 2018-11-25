@@ -1,10 +1,10 @@
 public class MIMAInstruction {
     public String command;
-    public Bit24 value;
+    public int value;
 
     MIMAInstruction(String command, int value) {
         this.command = command;
-        this.value = new Bit24(value);
+        this.value = value;
     }
 
     MIMAInstruction(String command) {
@@ -17,7 +17,7 @@ public class MIMAInstruction {
 
     public static void read(MIMA m, MIMAInstruction instruction) {
         String cmdName = instruction.command;
-        int paramValue = instruction.value.getValue();
+        int paramValue = instruction.value;
 
         switch (cmdName) {
             case "":
