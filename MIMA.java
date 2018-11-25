@@ -1,117 +1,89 @@
 public class MIMA {
+    //MIMA config
+    static final int adressBitSize = 20; //default 20 bit - maximum 32 bit (int)
+    static final int valueBitSize = 24; //default 24 bit - maximum 32 bit (int)
+
+    static final int MAX_VALUE = (int)(Math.pow(2, valueBitSize-1) -1);
+    static final int VALUE_BIT_RANGE = (int)Math.pow(2, valueBitSize);
+
     //processor fields
-    private Bit24 accumulator;
-    public Bit24[] memoryRegister;
-    public MIMAInstruction[] instructionRegister;
+    private int accumulator;
+    public MIMAMemoryRegister memoryRegister;
+    public MIMAInstructionRegister instructionRegister;
 
     //simulation-handling fields
     private int instructionIterator;
-    private int instructionLength;
     private boolean haltProcess;
 
-    //construction
+    //constructors
     MIMA() {
-        reset();
+        resetMemory();
+        resetInstructions();
         initProcess();
     }
 
     MIMA(MIMAInstruction[] instructions) {
         this();
-        setInstructions(instructions);
+        instructionRegister = new MIMAInstructionRegister(instructions);
     }
 
-    //process and initalization methods
-    private void initProcess() {
-        accumulator = new Bit24();
+    //methods
+    public int getMIMAValue(int x) {
+        x %= VALUE_BIT_RANGE;
+        if (x < 0)
+            x = VALUE_BIT_RANGE + x;
+        if (x > MAX_VALUE)
+            x = -(VALUE_BIT_RANGE - x);
+        return x;
+    }
 
+    private void initProcess() {
         haltProcess = false;
         instructionIterator = 0;
     }
 
-    public void reset() {
-        clearMemory();
-        clearInstructions();
-    }
-
+    public void resetMemory() { memoryRegister = new MIMAMemoryRegister(); }
+    public void resetInstructions() { instructionRegister = new MIMAInstructionRegister(); }
     public void startProcess() {
         initProcess();
-
         while (!haltProcess) {
-            MIMAInstruction.read(this, instructionRegister[instructionIterator]);
+            MIMAInstruction.read(this, instructionRegister.getInstructionAt(instructionIterator));
             instructionIterator++;
         }
     }
 
-
-    //instruction methods
-    public void setInstructions(MIMAInstruction[] instructions) {
-        instructionLength = instructions.length;
-        for (int i=0; i<instructionLength; ++i)
-            instructionRegister[i] = instructions[i];
-    }
-
-    public void addInstructions(MIMAInstruction[] instructions) {
-        int previousLength = instructionLength-instructions.length;
-        instructionLength += instructions.length;
-        for (int i=previousLength; i<instructionLength; ++i) {
-            instructionRegister[i] = instructions[i];
-        }
-    }
-
-    public void clearInstructions() {
-        instructionLength = 0;
-        instructionRegister = new MIMAInstruction[(int)(Math.pow(2, 20))];
-    }
-
-
-    //memory methods
-    public void clearMemory() {
-        memoryRegister = new Bit24[(int)(Math.pow(2, 20))];
-    }
-
-    public int getMemoryValueAt(int memAdr) {
-        return memoryRegister[memAdr].getValue();
-    }
-
-    public void setMemoryValueAt(int memAdr, int val) {
-        int accumulatorValue = accumulator.getValue();
-        LDC(val);
-        STV(memAdr);
-        LDC(accumulatorValue);
-    }
-
+    //wrappers
+    public int getMemValAt(int memAdr) { return memoryRegister.getValueAt(memAdr); }
+    public void setMemValAt(int memAdr, int val) {memoryRegister.setValueAt(memAdr, val); }
 
     //MIMA-commands
-    public void LDC(int c)      { accumulator.setValue(c); }
-    public void LDV(int memAdr) { accumulator.setValue(getMemoryValueAt(memAdr)); }
-    public void STV(int memAdr) {
-        if (memoryRegister[memAdr] == null)
-            memoryRegister[memAdr] = new Bit24();
-        memoryRegister[memAdr].setValue(accumulator.getValue());
-    }
-
-    public void LDIV(int memAdr) { LDV(getMemoryValueAt(memAdr)); }
-    public void STIV(int memAdr) { STV(getMemoryValueAt(memAdr)); }
-
-    public void ADD(int memAdr) { accumulator.setValue(accumulator.getValue() + getMemoryValueAt(memAdr)); }
-    public void AND(int memAdr) { accumulator.setValue(accumulator.getValue() & getMemoryValueAt(memAdr)); }
-    public void OR (int memAdr) { accumulator.setValue(accumulator.getValue() | getMemoryValueAt(memAdr)); }
-    public void XOR(int memAdr) { accumulator.setValue(accumulator.getValue() ^ getMemoryValueAt(memAdr)); }
-    public void NOT()           { accumulator.setValue(~accumulator.getValue());}
+    public void LDC(int c)      { accumulator = getMIMAValue(c); }
+    public void LDV(int memAdr) { accumulator = getMIMAValue(getMemValAt(memAdr)); }
+    public void STV(int memAdr) { setMemValAt(memAdr, accumulator); }
+    public void LDIV(int memAdr){ LDV(getMemValAt(memAdr)); }
+    public void STIV(int memAdr){ STV(getMemValAt(memAdr)); }
+    public void ADD(int memAdr) { accumulator = getMIMAValue(accumulator + getMemValAt(memAdr)); }
+    public void AND(int memAdr) { accumulator = getMIMAValue(accumulator & getMemValAt(memAdr)); }
+    public void OR (int memAdr) { accumulator = getMIMAValue(accumulator | getMemValAt(memAdr)); }
+    public void XOR(int memAdr) { accumulator = getMIMAValue(accumulator ^ getMemValAt(memAdr)); }
+    public void NOT()           { accumulator = getMIMAValue(~accumulator);}
     public void RAR() {
-        int accumulatorValue = accumulator.getValue();
+        int accumulatorValue = accumulator;
         int reversedValue = 0;
-        for (int i=0; i<24; ++i) {
-            reversedValue += (accumulatorValue % 2)*Math.pow(10, 24-i);
+        for (int i=0; i<valueBitSize; ++i) {
+            reversedValue += (accumulatorValue % 2)*Math.pow(10, valueBitSize-i);
             accumulatorValue /= 2;
         }
-        accumulator.setValue(reversedValue);
+        accumulator = getMIMAValue(reversedValue);
     }
 
-    public void EQL(int memAdr) { accumulator.setValue(accumulator.getValue() == getMemoryValueAt(memAdr) ? -1 : 0); }
+    public void EQL(int memAdr) {
+        accumulator = getMIMAValue(accumulator == getMemValAt(memAdr) ? -1 : 0);
+    }
+
     public void JMP(int instructionAdr){ instructionIterator = instructionAdr - 1;}
     public void JMN(int instructionAdr){
-        if (accumulator.getValue() < 0)
+        if (accumulator < 0)
             JMP(instructionAdr);
         else
             NULL();
