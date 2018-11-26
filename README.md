@@ -9,17 +9,50 @@ You can find the example (example program from GBI sheet Nr.10 on processors (WS
 Download the repository in a ZIP-file (or however you want)
 
 In the folder, run these commands:
-```
-javac Main.java
-java Main
-```
+
+    javac Main.java
+    java Main
 
 If everything works, you should now see this output:
-```
-sum: 165
-```
+
+    sum: 165
 
 Now you will only need to change the Main.java file for your own tests, then compile `javac Main.java` and run `java Main` it.
+
+### MIMA command set
+**LDC** *const*:<br/>
+&nbsp; &nbsp; loads a constant value into the accumulator<br/>
+**LDV** *adress*:<br/>
+&nbsp; &nbsp; loads a value from memory at given adress into the accumulator<br/>
+**STV** *adress*:<br/>
+&nbsp; &nbsp; stores the value from the accumulator in memory at given adress<br/>
+**LDIV** *adress*:<br/>
+&nbsp; &nbsp; loads a value from memory at given adress, <br/>
+&nbsp; &nbsp; then uses this value as adress to load from memory into the accumulator<br/>
+**STIV** *adress*:<br/>
+&nbsp; &nbsp; loads a value from memory at given adress, <br/>
+&nbsp; &nbsp; then uses this value as adress to store the accumulator value in memory<br/>
+**ADD** *adress*:<br/>
+&nbsp; &nbsp; adds the value from memory at given adress to the accumulator<br/>
+**AND** *adress*:<br/>
+&nbsp; &nbsp; performs the AND-operation bitwise on accumulator and value from memory at given adress<br/>
+**OR** *adress*:<br/>
+&nbsp; &nbsp; performs the OR-operation bitwise on accumulator and value from memory at given adress<br/>
+**XOR** *adress*:<br/>
+&nbsp; &nbsp; performs the XOR-operation bitwise on accumulator and value from memory at given adress<br/>
+**RAR**:<br/>
+&nbsp; &nbsp; reverses the bits in the accumulator (e.g. 011011100101110111100010 -> 010001111011101001110110)<br/>
+**NOT**:<br/>
+&nbsp; &nbsp; inverts the bits (0->1, 1->0) in the accumulator (effectively the negative value of the accumulator minus 1)<br/>
+**EQL** *adress*:<br/>
+&nbsp; &nbsp; sets all bits to 1, if the accumulator value has same value from memory at given adress, <br/>
+&nbsp; &nbsp; otherwise sets all bits to 0<br/>
+**JMP** *adress*:<br/>
+&nbsp; &nbsp; jumps to the instruction at given adress<br/>
+**JMN** *adress*:<br/>
+&nbsp; &nbsp; executes `JMP adress` if first bit in accumulator is 1<br/>
+**HALT**:<br/>
+&nbsp; &nbsp; halts the program<br/>
 
 ## Main.java
 
