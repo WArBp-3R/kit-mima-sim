@@ -5,6 +5,7 @@ public class MIMA {
 
     static final int MAX_VALUE = (int)(Math.pow(2, valueBitSize-1) -1);
     static final int VALUE_BIT_RANGE = (int)Math.pow(2, valueBitSize);
+    static final int ADRESS_BIT_RANGE = (int)Math.pow(2, adressBitSize);
 
     //processor fields
     private int accumulator;
@@ -36,7 +37,15 @@ public class MIMA {
             x = -(VALUE_BIT_RANGE - x);
         return x;
     }
-
+    
+    private static int getConstant(int c) {
+        x %= ADRESS_BIT_RANGE;
+        if (x < 0)
+            x += ADRESS_BIT_RANGE;
+        return x;
+    }
+    
+    //process methods
     private void initProcess() {
         haltProcess = false;
         instructionIterator = 0;
@@ -46,10 +55,8 @@ public class MIMA {
     public void resetInstructions() { instructionRegister = new MIMAInstructionRegister(); }
     public void startProcess() {
         initProcess();
-        while (!haltProcess) {
-            MIMAInstruction.read(this, instructionRegister.getInstructionAt(instructionIterator));
-            instructionIterator++;
-        }
+        while (!haltProcess)
+            MIMAInstruction.read(this, instructionRegister.getInstructionAt(instructionIterator++));
     }
 
     //wrappers
@@ -57,7 +64,7 @@ public class MIMA {
     public void setMemValAt(int memAdr, int val) {memoryRegister.setValueAt(memAdr, val); }
 
     //MIMA-commands
-    public void LDC(int c)      { accumulator = getMIMAValue(c); }
+    public void LDC(int c)      { accumulator = getConstant(c); }
     public void LDV(int memAdr) { accumulator = getMemValAt(memAdr); }
     public void STV(int memAdr) { setMemValAt(memAdr, accumulator); }
     public void LDIV(int memAdr){ LDV(getMemValAt(memAdr)); }
@@ -68,13 +75,9 @@ public class MIMA {
     public void XOR(int memAdr) { accumulator = getMIMAValue(accumulator ^ getMemValAt(memAdr)); }
     public void NOT()           { accumulator = ~accumulator;}
     public void RAR() {
-        int accumulatorValue = accumulator;
-        int reversedValue = 0;
-        for (int i=0; i<valueBitSize; ++i) {
-            reversedValue += (accumulatorValue % 2)*Math.pow(10, valueBitSize-i);
-            accumulatorValue /= 2;
-        }
-        accumulator = reversedValue;
+        int lastBit = accumulator % 2;
+        int accumulatorValue /= 2;
+        accumulatorValue += (int)(lastBit*Math.pow(2, valueBitSize-1));
     }
 
     public void EQL(int memAdr) {
