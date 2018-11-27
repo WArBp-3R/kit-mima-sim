@@ -20,6 +20,11 @@ If everything works, you should now see this output:
 
 Now you will only need to change the Main.java file for your own tests, then compile `javac Main.java` and run `java Main` it.
 
+### Important notes
+* Per default the KIT MIMA simulator has a `valueBitSize` of 24 and an `adressBitSize` of 20
+* Your process should end with a HALT command somehow, or the simulator will crash.
+* Loading constants below 0 or above 2^(`adressBitSize`)-1 may result in undesired behavior
+
 ### MIMA command set
 **LDC** *const*:<br/>
 &nbsp; &nbsp; loads a constant value into the accumulator<br/>
