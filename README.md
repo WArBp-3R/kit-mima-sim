@@ -47,7 +47,7 @@ Now you will only need to change the Main.java file for your own tests, then com
 **XOR** *adress*:<br/>
 &nbsp; &nbsp; performs the XOR-operation bitwise on accumulator and value from memory at given adress<br/>
 **RAR**:<br/>
-&nbsp; &nbsp; reverses the bits in the accumulator (e.g. 011011100101110111100010 -> 010001111011101001110110)<br/>
+&nbsp; &nbsp; rotates the bits in the accumulator (e.g. 001100110011001100110011 -> 100110011001100110011001)<br/>
 **NOT**:<br/>
 &nbsp; &nbsp; inverts the bits (0->1, 1->0) in the accumulator (effectively the negative value of the accumulator minus 1)<br/>
 **EQL** *adress*:<br/>
